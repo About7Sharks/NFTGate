@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@3rdweb/sdk": "^1.11.1",
+    "@3rdweb/sdk": "^1.18.1",
     "@chakra-ui/react": "^1.6.10",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",

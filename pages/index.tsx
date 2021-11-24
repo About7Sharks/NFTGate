@@ -20,7 +20,6 @@ const injectedConnector = new InjectedConnector({ supportedChainIds: [137] });
 
 const MEMBERSHIP_NFT_CONTRACT_ADDRESS =
   "0x527a5e544632a12b2bbca8f3e0aeaf3de599e95c";
-const MEMBERSHIP_NFT_TOKEN_ID = "5";
 const MEMBERSHIP_NFT_TOKEN_COUNT = 1;
 const OPENSEA_LINK =
   "https://opensea.io/assets/matic/0x2953399124f0cbb46d2cbacd8a89cf0599974963/47609522723514433734824687530042294980736405256883231083500050416333544751304";
@@ -35,7 +34,7 @@ const useWalletMembershipAccess = () => {
 
   async function checkWalletMembership() {
     // get the connected wallet as a signer
-    const signer = library.getSigner(account);
+    const signer = await library.getSigner(account);
 
     /*
       Our SDK takes in a valid Signer or Provider.
@@ -43,21 +42,24 @@ const useWalletMembershipAccess = () => {
       A provider can only perform READ calls on the blockchain.
       Read more: https://docs.ethers.io/v5/api/signer
       */
-    const module = new ThirdwebSDK(signer).getCollectionModule(
+    const module = new ThirdwebSDK(signer).getBundleModule(
       MEMBERSHIP_NFT_CONTRACT_ADDRESS
     );
+    console.log(signer)
     // check connceted wallet balance of the token
     const balance = await module.getOwned(account || '')
-   return console.log(balance)
-    // if (balance.toNumber() >= MEMBERSHIP_NFT_TOKEN_COUNT) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
+    console.log(balance)
+   
+    if (balance) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   if (library && account) {
     // Check wallet for membership nft then update the state.
+
     checkWalletMembership().then(setAccess);
   } else {
     // Reset access state if account is disconnected.
@@ -103,14 +105,12 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/*  */}
       <Center flexDirection="column">
-        <Heading> NFT Member's Only Lounge</Heading><br />
+        <Heading> NFT Member Only Lounge</Heading>
         <Text>
           1 Membership NFT is needed in order to access the lounge.
         </Text>
-        <iframe src="https://giphy.com/embed/QMou31nZSbjoY" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/sitting-tabby-chairsitting-QMou31nZSbjoY">via GIPHY</a></p>
-        <br />
+        <iframe src="https://giphy.com/embed/QMou31nZSbjoY" width="480" height="270" frameBorder="0" allowFullScreen></iframe>
         <Text mt={4} textAlign="center">
           <Text as="span">NFT address </Text>
           <Text fontWeight="bold" as="span">

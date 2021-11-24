@@ -87,7 +87,7 @@ export async function getServerSideProps(context: any) {
   }
 
   return {
-    props: { signature, walletAddress, balance: balance.toNumber() }, // Will be passed to the page component as props
+    props: { signature, walletAddress, balance: balance }, // Will be passed to the page component as props
   };
 }
 
